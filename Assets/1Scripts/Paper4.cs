@@ -15,7 +15,10 @@ public class Paper4 : Paper
             return;
             
         isSpine = true;
-        StartCoroutine(CoroutineComb(-45, -0.2f, 0.2f));
+        if (GameManager.Instance.papersNum == 4)
+            StartCoroutine(CoroutineComb(-45, -0.2f, 0.2f));
+        else
+            StartCoroutine(CoroutineComb(-45, -0.2f, 0.4f));
     }
 
     public override void Return()
@@ -24,6 +27,9 @@ public class Paper4 : Paper
             return;
             
         isSpine = true;
-        StartCoroutine(CoroutineComb(45, 0.2f, -0.2f));
+        if (GameManager.Instance.papersNum == 4)
+            StartCoroutine(CoroutineComb(45, 0.2f, -0.2f));
+        else
+            StartCoroutine(CoroutineComb(45, 0.2f, -0.4f));
     }
 }

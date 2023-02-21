@@ -12,13 +12,13 @@ public class GameManager : MonoBehaviour
         public Paper[] papers;
     }
     [SerializeField] PaperList[] paperLevel = new PaperList[5];
-
     [SerializeField] GameObject[] levelObj;
-
     [SerializeField] ParticleSystem[] particle;
 
+    public bool isCombine = false;
     public bool correct;
     public int level;
+    public int papersNum;
     static public GameManager Instance;
     private void Awake() 
     {
@@ -33,8 +33,14 @@ public class GameManager : MonoBehaviour
     public void CombinePaper()
     {
         for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
+            if (paperLevel[level].papers[i].isSpine)
+                return;
+        
+        papersNum = paperLevel[level].papers.Length;
+        for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
             paperLevel[level].papers[i].Combination();
             //papers[i].Combination();
+        //isCombine = true;
     }
 
     public void ReturnPaper()
@@ -42,15 +48,14 @@ public class GameManager : MonoBehaviour
         for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
             paperLevel[level].papers[i].Return();
             //papers[level][i].Return();
+        isCombine = false;
     }
 
     public void ClearCheck()
     {
         for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
-        {
             if (paperLevel[level].papers[i].status != 0)
                 return;
-        }
 
         correct = true;
         uiManager.Clear();
@@ -74,6 +79,7 @@ public class GameManager : MonoBehaviour
         level++;
         levelObj[level].SetActive(true);
         uiManager.LevelUpdate();
+        isCombine = false;
         correct = false;
     }
 

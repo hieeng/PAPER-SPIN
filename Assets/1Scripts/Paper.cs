@@ -10,8 +10,9 @@ public class Paper : MonoBehaviour
     [SerializeField] float spinTime;
     [SerializeField] Vector3 forceVec;
     [SerializeField] int force;
-    protected bool isSpine = false;
+
     public int status;
+    public bool isSpine;
 
     private void Awake() 
     {
@@ -61,14 +62,14 @@ public class Paper : MonoBehaviour
             return;
         if (GameManager.Instance.correct)
             return;
+        if (GameManager.Instance.isCombine)
+            return;
         isSpine = true;
         StartCoroutine(CoruotineSpin(status));
     }
 
     IEnumerator CoruotineSpin(int vaule)
     {
-        if (!gameObject.activeSelf)
-            yield break;
         var time = 0f;
         var origin = transform.rotation;
         var rotEulerAngle = transform.rotation.eulerAngles;
@@ -106,9 +107,8 @@ public class Paper : MonoBehaviour
     {
         if (GameManager.Instance.correct)
             yield break;
-        if (!gameObject.activeSelf)
-            yield break;
 
+        GameManager.Instance.isCombine = true;
         var time = 0f;
         var originRot = transform.rotation;
         var rotEulerAngle = transform.rotation.eulerAngles;

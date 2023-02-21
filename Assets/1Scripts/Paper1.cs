@@ -13,13 +13,23 @@ public class Paper1 : Paper
     {
         if (isSpine)
             return;
-        StartCoroutine(CoroutineComb(45, -0.2f, -0.2f));
+
+        isSpine = true;
+        if (GameManager.Instance.papersNum == 4)
+            StartCoroutine(CoroutineComb(45, -0.2f, -0.2f));
+        else
+            StartCoroutine(CoroutineComb(45, -0.2f, -0.4f));
     }
 
     public override void Return()
     {
         if (isSpine)
             return;
-        StartCoroutine(CoroutineComb(-45, 0.2f, 0.2f));
+
+        isSpine = true;
+        if (GameManager.Instance.papersNum == 4)
+            StartCoroutine(CoroutineComb(-45, 0.2f, 0.2f));
+        else
+            StartCoroutine(CoroutineComb(-45, 0.2f, 0.4f));
     }
 }

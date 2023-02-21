@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     {
         if (!Input.GetMouseButtonDown(0))
             return;
+        if (GameManager.Instance.isCombine)
+            return;
 
         GameManager.Instance.OffStartText();
         

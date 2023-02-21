@@ -13,8 +13,6 @@ public class Paper1 : Paper
     {
         if (isSpine)
             return;
-
-        isSpine = true;
         StartCoroutine(CoroutineComb(45, -0.2f, -0.2f));
     }
 
@@ -22,8 +20,6 @@ public class Paper1 : Paper
     {
         if (isSpine)
             return;
-            
-        isSpine = true;
         StartCoroutine(CoroutineComb(-45, 0.2f, 0.2f));
     }
 }

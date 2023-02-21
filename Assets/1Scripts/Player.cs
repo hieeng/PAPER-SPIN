@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     {
         if (!Input.GetMouseButtonDown(0))
             return;
+
+        GameManager.Instance.OffStartText();
         
         var ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray,out hit))
@@ -40,7 +42,7 @@ public class Player : MonoBehaviour
             yield return null;
         }
 
-        GameManager.Instance.Check();
+        GameManager.Instance.ClearCheck();
         if (!GameManager.Instance.correct)
             GameManager.Instance.ReturnPaper();
     }

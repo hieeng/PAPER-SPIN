@@ -4,10 +4,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] UIManager uiManager;
     [SerializeField] Player player;
-    [SerializeField] Paper[] papers;
+    [System.Serializable]
+    public class PaperList
+    {
+        public Paper[] papers;
+    }
+    [SerializeField] PaperList[] paperLevel = new PaperList[5];
+
+    [SerializeField] GameObject[] levelObj;
+
+    [SerializeField] ParticleSystem[] particle;
 
     public bool correct;
+    public int level;
     static public GameManager Instance;
     private void Awake() 
     {
@@ -21,24 +32,53 @@ public class GameManager : MonoBehaviour
 
     public void CombinePaper()
     {
-        for (int i = 0, size = papers.Length; i < size; i++)
-            papers[i].Combination();
+        for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
+            paperLevel[level].papers[i].Combination();
+            //papers[i].Combination();
     }
 
     public void ReturnPaper()
     {
-        for (int i = 0, size = papers.Length; i < size; i++)
-            papers[i].Return();
+        for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
+            paperLevel[level].papers[i].Return();
+            //papers[level][i].Return();
     }
 
-    public void Check()
+    public void ClearCheck()
     {
-        for (int i = 0, size = papers.Length; i < size; i++)
+        for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
         {
-            if (papers[i].status != 0)
+            if (paperLevel[level].papers[i].status != 0)
                 return;
         }
 
         correct = true;
+        uiManager.Clear();
+        for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
+            paperLevel[level].papers[i].Clear();
+        for (int i = 0, size = particle.Length; i < size; i++)
+            particle[i].Play();
+        StartCoroutine(CoruotineClear());
+    }
+
+    IEnumerator CoruotineClear()
+    {
+        var time = 0f;
+
+        while (time <= 2f)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+        levelObj[level].SetActive(false);
+        level++;
+        levelObj[level].SetActive(true);
+        uiManager.LevelUpdate();
+        correct = false;
+    }
+
+    public void OffStartText()
+    {
+        uiManager.OffStartText();
     }
 }

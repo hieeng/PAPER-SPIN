@@ -1,16 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Paper : MonoBehaviour
 {
+    Rigidbody rigid;
+    [SerializeField] SpriteRenderer image;
     [SerializeField] float spinTime;
+    [SerializeField] Vector3 forceVec;
+    [SerializeField] int force;
     protected bool isSpine = false;
     public int status;
 
     private void Awake() 
     {
         status = Random.Range(0, 4);
+        rigid = GetComponent<Rigidbody>();
     }
 
     protected void FristRotate(int value)
@@ -53,12 +59,16 @@ public class Paper : MonoBehaviour
     {
         if (isSpine)
             return;
+        if (GameManager.Instance.correct)
+            return;
         isSpine = true;
         StartCoroutine(CoruotineSpin(status));
     }
 
     IEnumerator CoruotineSpin(int vaule)
     {
+        if (!gameObject.activeSelf)
+            yield break;
         var time = 0f;
         var origin = transform.rotation;
         var rotEulerAngle = transform.rotation.eulerAngles;
@@ -89,11 +99,16 @@ public class Paper : MonoBehaviour
         isSpine = false;
     }
 
-    public virtual void Combination() {Debug.Log("1");}
+    public virtual void Combination() {}
     public virtual void Return() {}
 
     protected IEnumerator CoroutineComb(float angle, float x, float y)
     {
+        if (GameManager.Instance.correct)
+            yield break;
+        if (!gameObject.activeSelf)
+            yield break;
+
         var time = 0f;
         var originRot = transform.rotation;
         var rotEulerAngle = transform.rotation.eulerAngles;
@@ -113,5 +128,12 @@ public class Paper : MonoBehaviour
             yield return null;
         }
         isSpine = false;
+    }
+
+    public void Clear()
+    {
+        rigid.isKinematic = false;
+        rigid.AddForce(forceVec * force);
+        image.color = Color.black;
     }
 }

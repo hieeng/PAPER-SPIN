@@ -9,10 +9,10 @@ public class Player : MonoBehaviour
 
     private void Update() 
     {
-        Get();
+        Click();
     }
 
-    private void Get()
+    private void Click()
     {
         if (!Input.GetMouseButtonDown(0))
             return;

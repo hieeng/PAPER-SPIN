@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
             paperLevel[level].papers[i].Combination();
             //papers[i].Combination();
-        //isCombine = true;
+        isCombine = true;
     }
 
     public void ReturnPaper()
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
                 return;
 
         correct = true;
-        uiManager.Clear();
+        uiManager.Clear(level);
         for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
             paperLevel[level].papers[i].Clear();
         for (int i = 0, size = particle.Length; i < size; i++)
@@ -76,9 +76,15 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         levelObj[level].SetActive(false);
+        uiManager.CircleCollor(level);
         level++;
+        if (level == 5)
+        {
+            uiManager.OnCut();
+            yield break;
+        }
         levelObj[level].SetActive(true);
-        uiManager.LevelUpdate();
+        uiManager.LevelUpdate(level);
         isCombine = false;
         correct = false;
     }

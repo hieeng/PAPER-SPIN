@@ -7,6 +7,7 @@ public class Paper : MonoBehaviour
 {
     Rigidbody rigid;
     [SerializeField] SpriteRenderer image;
+    [SerializeField] ClearPaper clearPaper;
     [SerializeField] float spinTime;
     [SerializeField] Vector3 forceVec;
     [SerializeField] int force;
@@ -132,8 +133,11 @@ public class Paper : MonoBehaviour
 
     public void Clear()
     {
-        rigid.isKinematic = false;
+        clearPaper.gameObject.SetActive(true);
+        clearPaper.Clear();
+        gameObject.SetActive(false);
+/*         rigid.isKinematic = false;
         rigid.AddForce(forceVec * force);
-        image.color = Color.black;
+        image.color = Color.black; */
     }
 }

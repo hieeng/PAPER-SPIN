@@ -9,6 +9,7 @@ public class Paper : MonoBehaviour
     [SerializeField] SpriteRenderer image;
     [SerializeField] ClearPaper clearPaper;
     [SerializeField] float spinTime;
+    float shakeTime = 0.05f;
     [SerializeField] Vector3 forceVec;
     [SerializeField] int force;
 
@@ -102,6 +103,10 @@ public class Paper : MonoBehaviour
     }
 
     public virtual void Combination() {}
+    public void Sahke()
+    {
+        StartCoroutine(CoruotineShake());
+    }
     public virtual void Return() {}
 
     protected IEnumerator CoroutineComb(float angle, float x, float y)
@@ -109,7 +114,6 @@ public class Paper : MonoBehaviour
         if (GameManager.Instance.correct)
             yield break;
 
-        GameManager.Instance.isCombine = true;
         var time = 0f;
         var originRot = transform.rotation;
         var rotEulerAngle = transform.rotation.eulerAngles;
@@ -129,6 +133,43 @@ public class Paper : MonoBehaviour
             yield return null;
         }
         isSpine = false;
+    }
+
+    IEnumerator CoruotineShake()
+    {
+        var time = 0f;
+        var origin = transform.position;
+        var temp = transform.position;
+        var nextPos = transform.position;
+        nextPos.x += 0.25f;
+
+        while (time <= shakeTime)
+        {
+            time += Time.deltaTime;
+            transform.position = Vector3.Lerp(temp, nextPos, time / shakeTime);
+            yield return null;
+        }
+
+        time = 0f;
+        temp = transform.position;
+        nextPos.x -= 0.5f;
+
+        while (time <= shakeTime * 2)
+        {
+            time += Time.deltaTime;
+            transform.position = Vector3.Lerp(temp, nextPos, time / shakeTime);
+            yield return null;
+        }
+
+        time = 0f;
+        temp = transform.position;
+
+        while (time <= shakeTime)
+        {
+            time += Time.deltaTime;
+            transform.position = Vector3.Lerp(temp, origin, time / shakeTime);
+            yield return null;
+        }
     }
 
     public void Clear()

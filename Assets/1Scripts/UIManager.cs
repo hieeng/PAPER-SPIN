@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] ImageAni[] image;
     [SerializeField] Image[] circle;
     [SerializeField] GameObject cut;
+    [SerializeField] ADS ads;
     [SerializeField] Text LevelText;
     [SerializeField] Text StartText;
 
@@ -36,5 +37,15 @@ public class UIManager : MonoBehaviour
     public void OnCut()
     {
         cut.SetActive(true);
+    }
+
+    public void OnADS()
+    {
+        ads.OnADS();
+    }
+
+    public void OffADS()
+    {
+        ads.OffADS();
     }
 }

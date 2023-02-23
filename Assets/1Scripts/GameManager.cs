@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public int level;
     public int papersNum;
     static public GameManager Instance;
+
     private void Awake() 
     {
         if (Instance != null)
@@ -51,6 +52,12 @@ public class GameManager : MonoBehaviour
         isCombine = false;
     }
 
+    public void SahkePaper()
+    {
+        for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
+            paperLevel[level].papers[i].Sahke();
+    }
+
     public void ClearCheck()
     {
         for (int i = 0, size = paperLevel[level].papers.Length; i < size; i++)
@@ -70,6 +77,7 @@ public class GameManager : MonoBehaviour
     {
         var time = 0f;
 
+        //이미지 애니메이션 동안 2초 대기
         while (time <= 2f)
         {
             time += Time.deltaTime;
@@ -78,12 +86,14 @@ public class GameManager : MonoBehaviour
         levelObj[level].SetActive(false);
         uiManager.CircleCollor(level);
         level++;
-        if (level == 5)
+        if (level == paperLevel.Length)
         {
             uiManager.OnCut();
             yield break;
         }
         levelObj[level].SetActive(true);
+        player.firstClick = true;
+        uiManager.OnADS();
         uiManager.LevelUpdate(level);
         isCombine = false;
         correct = false;
@@ -92,5 +102,10 @@ public class GameManager : MonoBehaviour
     public void OffStartText()
     {
         uiManager.OffStartText();
+    }
+
+    public void OffADS()
+    {
+        uiManager.OffADS();
     }
 }
